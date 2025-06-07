@@ -1,0 +1,5 @@
+### Installing
+
+```
+cargo install --path .
+```

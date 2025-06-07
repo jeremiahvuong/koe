@@ -2,5 +2,10 @@
 name = "koe"
 version = "0.1.0"
 edition = "2024"
+authors = ["Jeremiah Vuong <vuong@berkeley.edu>"]
+readme = "README.md"
+repsitory = "https://github.com/jeremiahvuong/koe"
 
 [dependencies]
+gemini-rust = "0.4.2"
+tokio = "1.45.1"
