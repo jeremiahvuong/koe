@@ -16,7 +16,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
       }
     };
 
-    let model = "models/gemini-2.5-flash-preview-04-17".to_string();
+    let model = "models/gemini-2.5-flash-preview-05-20".to_string();
     let gemini = Gemini::with_model(gemini_api_key, model);
 
     let system_prompt =
@@ -49,6 +49,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let response = gemini.generate_content()
             .with_system_prompt(system_prompt)
             .with_temperature(0.0) // No randomness
+            // Few-shot prompting
+            .with_user_message("create a new rust project on the desktop")
+            .with_model_message("cd ~/desktop && cargo new my_project")
             .with_user_message(&message)
             .execute()
             .await?;
