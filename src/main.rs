@@ -38,7 +38,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 Do not explain the command, do not return any other text, simply return the command to be run in the unix shell. \n
                 Only return the command if you are 100% sure that the commands matches the task and runs successfully; if you are not sure, return 'unknown'. \n
                 The user is currently running OS: {}. \n
-                The user is currently in directory: {}. \n
+                The user is currently in directory: {}.
                 ",
                 std::env::consts::OS,
                 std::env::current_dir().unwrap().display()
@@ -101,21 +101,31 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             .unwrap();
         println!("{}", String::from_utf8_lossy(&output.stdout));
     } else {
+        loop {
         println!("{}\nExecute command? (y/n)", command_to_execute);
 
         let mut input = String::new();
         io::stdin().read_line(&mut input).unwrap();
 
-        if input.trim() == "y" {
+        match input.trim().to_lowercase().as_str() {
+          "y" => {
             let output = std::process::Command::new("sh")
                 .arg("-c")
                 .arg(command_to_execute)
                 .output()
                 .unwrap();
             println!("{}", String::from_utf8_lossy(&output.stdout));
-        } else {
+            break;
+          }
+          "n" => {
             println!("Command not executed.");
+            break;
+          }
+          _ => {
+            println!("Invalid input. Please enter 'y' or 'n'.");
+          }
         }
+      }
     }
 
     Ok(())

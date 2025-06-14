@@ -14,7 +14,8 @@ cargo install --path .
 
 ### Todo
 
-- [ ] Un-safe and safe mode
+- [x] Un-safe and safe mode
+- [ ] macros for common commands
 - [ ] Have a way to add "context" i.e. if user has custom commands, or if user has a specific workflow
 - [ ] Switch to different models (via openrouter for simplicity)
 - [ ] REPL mode
