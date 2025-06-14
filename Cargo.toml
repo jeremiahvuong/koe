@@ -1,11 +1,12 @@
 [package]
 name = "koe"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 authors = ["Jeremiah Vuong <vuong@berkeley.edu>"]
 readme = "README.md"
 repsitory = "https://github.com/jeremiahvuong/koe"
 
 [dependencies]
+clap = { version = "4.5.40", features = ["derive"] }
 gemini-rust = "0.4.2"
 tokio = "1.45.1"
