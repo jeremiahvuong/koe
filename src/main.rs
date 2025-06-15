@@ -81,7 +81,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .execute()
         .await?;
 
-    // Stop the spinner thread
+    // Stop the spinner thread after the response is received
     tx.send(()).unwrap();
     spinner_handle.join().unwrap();
     print!("\r\x1B[K"); // Clear the spinner line
@@ -106,7 +106,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         run_command_and_print_output(&command_to_execute);
     } else {
         loop {
-            println!("{}\nExecute command? (y/n)", command_to_execute);
+            println!("{}", command_to_execute);
+            print!("Execute command? (y/n) ");
+            io::stdout().flush().unwrap();
 
             let mut input = String::new();
             io::stdin().read_line(&mut input).unwrap();
