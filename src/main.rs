@@ -1,10 +1,10 @@
-use tokio;
+use clap::Parser;
 use gemini_rust::Gemini;
 use std::io::{self, Write};
+use std::sync::mpsc;
 use std::thread;
 use std::time::Duration;
-use std::sync::mpsc;
-use clap::Parser;
+use tokio;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -68,7 +68,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     });
 
-    let response = gemini.generate_content()
+    let response = gemini
+        .generate_content()
         .with_system_prompt(system_prompt)
         .with_temperature(0.0) // No randomness
         // Few-shot prompting
@@ -92,40 +93,38 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let command_to_execute = response.text();
 
-    if args.r#unsafe {
-        println!("Executing command directly: {}", command_to_execute);
+    let run_command_and_print_output = |command: &str| {
         let output = std::process::Command::new("sh")
             .arg("-c")
-            .arg(command_to_execute)
+            .arg(command)
             .output()
             .unwrap();
         println!("{}", String::from_utf8_lossy(&output.stdout));
+    };
+
+    if args.r#unsafe {
+        run_command_and_print_output(&command_to_execute);
     } else {
         loop {
-        println!("{}\nExecute command? (y/n)", command_to_execute);
+            println!("{}\nExecute command? (y/n)", command_to_execute);
 
-        let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
+            let mut input = String::new();
+            io::stdin().read_line(&mut input).unwrap();
 
-        match input.trim().to_lowercase().as_str() {
-          "y" => {
-            let output = std::process::Command::new("sh")
-                .arg("-c")
-                .arg(command_to_execute)
-                .output()
-                .unwrap();
-            println!("{}", String::from_utf8_lossy(&output.stdout));
-            break;
-          }
-          "n" => {
-            println!("Command not executed.");
-            break;
-          }
-          _ => {
-            println!("Invalid input. Please enter 'y' or 'n'.");
-          }
+            match input.trim().to_lowercase().as_str() {
+                "y" => {
+                    run_command_and_print_output(&command_to_execute);
+                    break;
+                }
+                "n" => {
+                    println!("Command not executed.");
+                    break;
+                }
+                _ => {
+                    println!("Invalid input. Please enter 'y' or 'n'.");
+                }
+            }
         }
-      }
     }
 
     Ok(())
