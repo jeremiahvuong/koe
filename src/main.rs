@@ -29,7 +29,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     };
 
-    let model = "models/gemini-2.5-flash-preview-05-20".to_string();
+    let model = "models/gemini-2.5-flash".to_string();
     let gemini = Gemini::with_model(gemini_api_key, model);
 
     let system_prompt =
