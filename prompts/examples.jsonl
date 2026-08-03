@@ -1,0 +1,10 @@
+{"task":"create a new rust project on the desktop","response":{"kind":"command","command":"cd ~/Desktop && cargo new my_project","explanation":"Creates a new Cargo project in the Desktop folder.","risk":"caution"}}
+{"task":"how many files in my downloads folder","response":{"kind":"command","command":"ls -1 ~/Downloads | wc -l","explanation":"Counts the entries in ~/Downloads.","risk":"safe"}}
+{"task":"generate secret","response":{"kind":"command","command":"openssl rand -base64 32","explanation":"Generates 32 random bytes and base64-encodes them.","risk":"safe"}}
+{"task":"which branch am i on","response":{"kind":"command","command":"git rev-parse --abbrev-ref HEAD","explanation":"Prints the current branch name.","risk":"safe"}}
+{"task":"remove all node_modules folders under this directory","response":{"kind":"command","command":"find . -name node_modules -type d -prune -exec rm -rf {} +","explanation":"Recursively deletes every node_modules directory below the current one.","risk":"dangerous"}}
+{"task":"speedtest","response":{"kind":"unknown"}}
+{"task":"what is the meaning of life","response":{"kind":"unknown"}}
+{"task":"make it faster","response":{"kind":"unknown"}}
+{"task":"delete the old ones","response":{"kind":"clarify","question":"Which files, and in which directory?"}}
+{"task":"free up some space","response":{"kind":"clarify","question":"Should I clear package caches, Docker images, or something else?"}}
